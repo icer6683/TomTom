@@ -119,6 +119,7 @@ while hours_counter <= 72:
                 "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        
             '''
             my_df = pd.concat([my_df, output_route_df])
+            print("got here three!")
             '''
             my_df_step = my_df_step.concat(output_step_df)
             '''

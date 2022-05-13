@@ -7,4 +7,4 @@ use "trips_highway_test_timezone_conversion.dta", clear
 drop if strpos(category, "20 km")
 drop if strpos(category, "30 km")
 
-export delimited test_input, clear
+export delimited test_input

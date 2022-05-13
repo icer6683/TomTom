@@ -9,8 +9,8 @@ from datetime import datetime
 import time
 
 
-apikey = ["DcBEZcAliYnIjnwmQTIlcDhkMG925P7H",
-          "gvYGCCG8dZRkbCABaM9gU49jAgiC7qzh"]
+apikey = ["Ox4YwdYU3BSMooPpB65EUl5Ioxo2wOcN",
+          "UlHtK8wneRhvtAepd41MiEpePgUjGaNG", "RoIba9zpvuYQaC6w9jUoEUgn4nBEZSF0"]
 
 
 def api_queries(mode, lat_orig, lon_orig, lat_dest, lon_dest, api):
@@ -88,7 +88,7 @@ def json_parsing(jsonfile, mode):
 
 
 my_df = pd.DataFrame([],  columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
-                     "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
+                     "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
 '''
 my_df_step = pd.DataFrame([], columns=["indexnum", "mode", "route", "step", "step_lat", "step_lon",
                           "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])
@@ -97,7 +97,7 @@ my_df_step = pd.DataFrame([], columns=["indexnum", "mode", "route", "step", "ste
 infile = pd.read_csv("test_input.csv")
 counter = 0
 hours_counter = 0
-while hours_counter <= 72:
+while counter <= 100:
 
     now = datetime.now()
     if now.minute > 0:
@@ -106,22 +106,27 @@ while hours_counter <= 72:
         for index, row in jobs.iterrows():
             counter += 1
             indexnum = row['indexnum']
-            # retrieve json file
-            jsonfile = api_queries(
-                "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 2])
-            # parse route and step data
-            output_route = json_parsing(jsonfile, "car")
-            output_route = output_route.append(now.hour)
-            output_route_df = pd.DataFrame(output_route, columns=[
-                "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
-            '''
-            output_step_df = pd.DataFrame(output_step, columns=[
-                "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        
-            '''
-            my_df = pd.concat([my_df, output_route_df])
-            '''
-            my_df_step = my_df_step.concat(output_step_df)
-            '''
+            try:
+                # retrieve json file
+                jsonfile = api_queries(
+                    "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 3])
+                try:
+                    # parse route and step data
+                    output_route = json_parsing(jsonfile, "car")
+                    output_route_df = pd.DataFrame(output_route, columns=[
+                                                   "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
+                    '''
+                    output_step_df = pd.DataFrame(output_step, columns=[
+                                               "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        '''
+                    my_df = my_df.concat(output_route_df)
+                    '''
+                    my_df_step = my_df_step.concat(output_step_df)
+                    '''
+                except:
+                    print(str(indexnum) + " " +
+                          "Parsing  Unsuccessful")
+            except:
+                print(str(indexnum) + " " + " Unsuccessful")
             print(str(counter) + " trips have been queried at " + str(now.hour))
         hours_counter += 1
     else:

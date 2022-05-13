@@ -88,7 +88,7 @@ def json_parsing(jsonfile, mode):
 
 
 my_df = pd.DataFrame([],  columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
-                     "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
+                     "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
 '''
 my_df_step = pd.DataFrame([], columns=["indexnum", "mode", "route", "step", "step_lat", "step_lon",
                           "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])
@@ -111,14 +111,17 @@ while hours_counter <= 72:
                 "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 2])
             # parse route and step data
             output_route = json_parsing(jsonfile, "car")
-            output_route = output_route.append(now.hour)
+            print("got here")
+            print(output_route)
             output_route_df = pd.DataFrame(output_route, columns=[
-                "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
+                "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
+            print("got here too")
             '''
             output_step_df = pd.DataFrame(output_step, columns=[
                 "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        
             '''
             my_df = pd.concat([my_df, output_route_df])
+            print("got here three!")
             '''
             my_df_step = my_df_step.concat(output_step_df)
             '''
