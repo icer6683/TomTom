@@ -77,10 +77,8 @@ def json_parsing(jsonfile, mode):
         output_route.append(new_obs)
 
         # parse step data
-        try:
-            output_step = json_parsing_steps(content, route, mode)
-        except:
-            print("Error is here")
+        output_step = json_parsing_steps(content, route, mode)
+
     return output_route, output_step
 
 # =======================================================================
@@ -115,17 +113,17 @@ while infile.shape[0] != 0:  # while there are trips un-queried
                     # retrieve json file
                     jsonfile = api_queries(
                         m, row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 2])
+
                     try:
                         # parse route and step data
                         output_route, output_step = json_parsing(jsonfile, m)
-                        # output_route_df = pd.DataFrame(output_route, columns=[
-                        #                                "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
-                        # output_step_df = pd.DataFrame(output_step, columns=[
-                        #                               "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])
-                        # my_df = my_df.concat(output_route_df)
-                        # my_df_step = my_df_step.concat(output_step_df)
+                        output_route_df = pd.DataFrame(output_route, columns=[
+                                                       "indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
+                        output_step_df = pd.DataFrame(output_step, columns=[
+                                                      "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])
+                        my_df = my_df.concat(output_route_df)
+                        my_df_step = my_df_step.concat(output_step_df)
                     except:
-                        print(jsonfile)
                         print(str(indexnum) + " " + m +
                               "Parsing  Unsuccessful")
 

@@ -77,10 +77,8 @@ def json_parsing(jsonfile, mode):
         output_route.append(new_obs)
 
         # parse step data
-        try:
-            output_step = json_parsing_steps(content, route, mode)
-        except:
-            print("Error is here")
+        output_step = json_parsing_steps(content, route, mode)
+
     return output_route, output_step
 
 # =======================================================================
@@ -115,6 +113,7 @@ while infile.shape[0] != 0:  # while there are trips un-queried
                     # retrieve json file
                     jsonfile = api_queries(
                         m, row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 2])
+                    
                     try:
                         # parse route and step data
                         output_route, output_step = json_parsing(jsonfile, m)

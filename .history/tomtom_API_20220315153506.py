@@ -77,10 +77,8 @@ def json_parsing(jsonfile, mode):
         output_route.append(new_obs)
 
         # parse step data
-        try:
-            output_step = json_parsing_steps(content, route, mode)
-        except:
-            print("Error is here")
+        output_step = json_parsing_steps(content, route, mode)
+
     return output_route, output_step
 
 # =======================================================================
