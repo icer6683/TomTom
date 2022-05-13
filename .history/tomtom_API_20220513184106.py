@@ -105,7 +105,6 @@ hours_counter = 0
 while hours_counter <= 72:
 
     now = datetime.now()
-    print(str(now.hour)+" : "+str(now.minute))
     if now.minute == 0:
         jobs = infile
         for index, row in jobs.iterrows():

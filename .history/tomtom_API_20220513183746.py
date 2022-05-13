@@ -10,12 +10,7 @@ import time
 
 
 apikey = ["VFjjgONiaSNpMPCOMRvSmQ4cwRIpPpuA", "s9AazSTPdc04acDYRid2WxqBhc44oWZN", "1Fg5gA8AkajFvFFL4aer2nQdOeyZruYe",
-          "zRtUxicG4GUA7t8Rf7Np5eVkWZv39348", "PXhiLGLGEBrfLgfhO0uRt3fG06t4lVlf", "aurBxgI2lhipas4g7XFhNeALbBaJlAWt",
-          "gvYGCCG8dZRkbCABaM9gU49jAgiC7qzh", "CxFgRJfOnPDjAGicX3xwXO93CjrCq37u", "tsRhH3qShi8TI4twQY5XqRQhQYBhKfjV",
-          "uQt6Or9i7DGTYZ3Ap8QWQr2hOuPH5Vcg", "WBfGxCRAKU9S6pPnGpTuoeEMQp2ZXvC5", "FzlRpUd8PJ3wnQpjTGWPhMpDaADdQmVG",
-          "ZpBcELyc8wNLlFZ48aXNf3xbDt0GumA1", "vE7QZ9GTv2MNhvPVs5Lu0qGWtQg9gs78", "n11hwbUs7raXK3NXsW7SUzdPRA0GsJQV",
-          "cRxoU0lrstjPXJoW9mqJVRvvbTADujO9", "3Hq5rGxiNFqADoleUlqfrmjtXfAGLEgH", "LTyc0jeeOVcBJbr0tpOnzAkwj6V4Sfnw",
-          "hz6nP2t4tgJ5ABGBZPd3nTwcA01XGxsE", "1k3CGnEEC7OE6GiP4XLDyqdYq2v0bt1e"]
+          "zRtUxicG4GUA7t8Rf7Np5eVkWZv39348", "PXhiLGLGEBrfLgfhO0uRt3fG06t4lVlf", "aurBxgI2lhipas4g7XFhNeALbBaJlAWt"]
 
 
 def api_queries(mode, lat_orig, lon_orig, lat_dest, lon_dest, api):
@@ -105,15 +100,15 @@ hours_counter = 0
 while hours_counter <= 72:
 
     now = datetime.now()
-    print(str(now.hour)+" : "+str(now.minute))
-    if now.minute == 0:
+    if now.minute > 0:
         jobs = infile
+
         for index, row in jobs.iterrows():
             counter += 1
             indexnum = row['indexnum']
             # retrieve json file
             jsonfile = api_queries(
-                "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 20])
+                "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 2])
             # parse route and step data
             output_route = json_parsing(jsonfile, "car")
             output_route = output_route.append(now.hour)
