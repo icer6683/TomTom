@@ -121,8 +121,6 @@ while hours_counter <= 72:
                 output_route_df = pd.DataFrame(output_route, columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
                                                "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
             except:
-                error_list = [row['indexnum'], "ERROR", "ERROR", "ERROR", "ERROR",
-                              "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", str(now.hour)]
                 output_route_df = pd.DataFrame([], columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
                                                "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
             '''

@@ -108,23 +108,17 @@ while hours_counter <= 72:
     if now.minute == 0:
         jobs = infile
         for index, row in jobs.iterrows():
-            time.sleep(0.5)
+            time.sleep(1)
             counter += 1
             indexnum = row['indexnum']
-            try:
+            try: 
                 # retrieve json file
                 jsonfile = api_queries(
-                    "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 20])
+                "car", row['lat_orig'], row['lon_orig'], row['lat_dest'], row['lon_dest'], apikey[counter % 20])
                 # parse route and step data
                 output_route = json_parsing(jsonfile, "car")
                 output_route = output_route.append(now.hour)
-                output_route_df = pd.DataFrame(output_route, columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
-                                               "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
-            except:
-                error_list = [row['indexnum'], "ERROR", "ERROR", "ERROR", "ERROR",
-                              "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", str(now.hour)]
-                output_route_df = pd.DataFrame([], columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
-                                               "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
+                output_route_df = pd.DataFrame(output_route, columns=["indexnum", "mode", "route", "departure_time", "arrival_time", "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s", "hour"])
             '''
             output_step_df = pd.DataFrame(output_step, columns=[
                 "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        
@@ -133,7 +127,7 @@ while hours_counter <= 72:
             '''
             my_df_step = my_df_step.concat(output_step_df)
             '''
-        print(str(counter) + " trips have been queried at " + str(now.hour))
+            print(str(counter) + " trips have been queried at " + str(now.hour))
         hours_counter += 1
         # Write files to output
         my_df.to_csv(r"output.csv", mode="w", index=False, header=True)
