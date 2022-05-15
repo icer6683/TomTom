@@ -105,7 +105,7 @@ while hours_counter <= 72:
                                        "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
     now = datetime.now()
     print(str(now.hour)+" : "+str(now.minute))
-    if now.minute == 0:
+    if now.minute > 0:
         jobs = infile
         for index, row in jobs.iterrows():
             time.sleep(0.5)
@@ -119,16 +119,20 @@ while hours_counter <= 72:
                 output_route = json_parsing(jsonfile, "car")
                 output_route_df = pd.DataFrame(output_route, columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
                                                "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
+                error_list = [row['indexnum'], "ERROR", "ERROR", "ERROR", "ERROR",
+                              "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"]
+                output_route_df = pd.DataFrame(error_list, columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
+                                               "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
             except:
-                error_list = [[indexnum, "ERROR", "ERROR", "ERROR", "ERROR",
-                              "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"]]
+                error_list = [row['indexnum'], "ERROR", "ERROR", "ERROR", "ERROR",
+                              "ERROR", "ERROR", "ERROR", "ERROR", "ERROR", "ERROR"]
                 output_route_df = pd.DataFrame(error_list, columns=["indexnum", "mode", "route", "departure_time", "arrival_time",
                                                "dist_m", "traffic_delay_s", "traffic_delay_m", "notraffic_s", "hist_traffic_s", "traffic_time_s"])
             my_df = pd.concat([my_df, output_route_df])
-            '''
             pd.set_option("display.max_rows", None,
                           "display.max_columns", None)
             print(my_df)
+            '''
             output_step_df = pd.DataFrame(output_step, columns=[
                 "indexnum", "mode", "route", "step", "step_lat", "step_lon", "instruction_type", "roadnumber", "street", "maneuver", "turningangle", "message"])                        
             my_df_step = my_df_step.concat(output_step_df)
